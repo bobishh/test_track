@@ -1,0 +1,14 @@
+version: '3'
+services:
+  test_tracker:
+    build: .
+    environment:
+      SECRET_KEY_BASE: 'blablasuper'
+      RAILS_ENV: production
+      DATABASE_URL: 'postgresql://postgres@db/test_track'
+    ports:
+      - "4242:4242"
+    links:
+      - db
+  db:
+    image: "postgres:9.6-alpine"
