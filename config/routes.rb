@@ -8,6 +8,9 @@ Rails.application.routes.draw do
       match 'split_registry', to: '/api/v1/cors#allow', via: :options
       resource :split_registry, only: :show
 
+      match 'assignments_calculations', to: '/api/v1/cors#allow', via: :options
+      resource :assignments_calculations, only: :create
+
       match 'assignment_event', to: '/api/v1/cors#allow', via: :options
       resource :assignment_event, only: :create
 
