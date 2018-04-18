@@ -8,8 +8,12 @@ default: &default
 
 production: &env_var_config
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  host: <%= ENV['DB_HOST'] %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  database: <%= ENV['DB_NAME'] %>
   pool: <%= worker_count == 0 ? thread_count : worker_count * thread_count %>
+
 stage:
   <<: *env_var_config
 test:

@@ -52,6 +52,8 @@ gem 'style_closet', path: 'vendor/gems/style-closet'
 gem 'foreman'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
+gem 'dotenv-rails'
+gem 'net-http-pipeline', '~> 1.0.1'
 
 group :development, :test do
   gem 'simplecov', require: false
@@ -61,8 +63,6 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
   gem 'rubocop'
-
-  gem 'dotenv-rails'
 
   gem 'poltergeist'
   gem 'site_prism'

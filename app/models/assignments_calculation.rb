@@ -49,13 +49,6 @@ class AssignmentsCalculation
     !Identifier.exists?(visitor_id: visitor.id)
   end
 
-  def create_identifier_if_needed
-    return unless @user_id.present? && no_identifier?
-    Identifier.create!(visitor_id: visitor.id,
-                       value: @user_id,
-                       identifier_type_id: @id_type_id)
-  end
-
   def calculate_variants
     unassigned_splits.each_with_object({}) do |split, acc|
       acc[split.name] = assign_split(split)
@@ -63,9 +56,9 @@ class AssignmentsCalculation
   end
 
   def assign_split(split)
-    variant = VariantCalculator.new(visitor_id: visitor.id,
+    variant = VariantCalculator.new(visitor_id: @canonical_visitor.id,
                                     split: split).variant
-    Assignment.create(visitor_id: visitor.id,
+    Assignment.create(visitor_id: @canonical_visitor.id,
                       variant: variant,
                       split_id: split.id,
                       context: :backend)

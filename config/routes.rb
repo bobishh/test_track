@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get '_health', to: 'health#check'
+
   namespace :api do
     namespace :system do
       resource :status, only: :show

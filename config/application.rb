@@ -39,9 +39,24 @@ module TestTrack
 
     if ENV["SEMANTIC_LOGGER_ENABLED"].present?
       require 'rails_semantic_logger'
+      require 'json_with_silent_exceptions_log_formatter'
 
+      config.log_level = :info
       config.rails_semantic_logger.add_file_appender = false
-      config.semantic_logger.add_appender(io: $stdout, formatter: :json)
+      config.rails_semantic_logger.format = JsonWithSilentExceptionsLogFormatter.new
+      config.semantic_logger.application = 'grabr-ab'
+
+      config.log_tags = {
+        request_id: :request_id,
+        user_id: ->(req){ req.current_user.try(:id) if req.respond_to?(:current_user) }
+      }
+
+      config.semantic_logger.add_appender(
+        io: $stdout,
+        level: :info,
+        formatter: config.rails_semantic_logger.format,
+        filter: ->(log){ log.payload.present? ? log.payload[:path] != '/_health' : true }
+      )
     end
   end
 end
