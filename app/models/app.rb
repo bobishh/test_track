@@ -5,8 +5,6 @@ class App < ActiveRecord::Base
   validates :name, :auth_secret, presence: true
   validates :name, uniqueness: true
 
-  validate :auth_secret_must_be_sufficiently_strong
-
   private
 
   def auth_secret_must_be_sufficiently_strong

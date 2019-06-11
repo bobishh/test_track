@@ -1,0 +1,13 @@
+<h1>Create split</h1>
+
+
+<%= simple_form_for @split, url: admin_splits_path, method: :post do |f| %>
+  <%= f.error :base %>
+  <%= f.input :name, label: "Name" %>
+  <%= f.input :owner_app_id, as: "hidden", input_html: { value: App.first.id } %>
+  <%= f.input :registry, label: "Variants (JSON)", as: "text", input_html: { value: @split.registry.to_json } %>
+
+  <%= render "shared/form_footer", f: f, submit_text: "Create split", submit_disable_with_text: "Creating split..." %>
+<% end %>
+
+<%= @split.errors.inspect %>

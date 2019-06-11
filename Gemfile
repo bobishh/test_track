@@ -32,10 +32,6 @@ gem 'responders'
 
 gem 'rack-timeout'
 
-gem 'airbrake', '~> 4.3.2'
-
-gem 'newrelic_rpm'
-
 gem 'rails_semantic_logger', require: false
 
 gem 'devise'
@@ -72,12 +68,6 @@ group :development, :test do
   gem 'factory_bot_rails'
 
   gem 'ruby_spec_helpers', path: 'vendor/gems/ruby_spec_helpers'
-end
-
-group :development do
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
-  gem 'travis', '~> 1.8.0'
 end
 
 group :test do
