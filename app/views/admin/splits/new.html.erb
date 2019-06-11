@@ -1,6 +1,5 @@
 <h1>Create split</h1>
 
-
 <%= simple_form_for @split, url: admin_splits_path, method: :post do |f| %>
   <%= f.error :base %>
   <%= f.input :name, label: "Name" %>
@@ -9,5 +8,3 @@
 
   <%= render "shared/form_footer", f: f, submit_text: "Create split", submit_disable_with_text: "Creating split..." %>
 <% end %>
-
-<%= @split.errors.inspect %>
