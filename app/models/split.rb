@@ -7,14 +7,10 @@ class Split < ActiveRecord::Base
   has_many :variant_details
 
   validates :name, presence: true, uniqueness: true
-  validates :registry, presence: true
 
-  validate :name_must_be_snake_case
-  validate :name_must_not_include_new
-  validate :name_must_not_end_with_test
-  validate :variants_must_be_snake_case
   validate :registry_weights_must_sum_to_100
   validate :registry_weights_must_be_integers
+  validates :registry, presence: true
 
   before_validation :cast_registry
 
@@ -75,22 +71,6 @@ class Split < ActiveRecord::Base
 
   private
 
-  def name_must_be_snake_case
-    errors[:name] << "must be snake_case: #{name.inspect}" if name_not_underscored?
-  end
-
-  def name_must_not_include_new
-    errors[:name] << "'new' is too vague. Use absolute time if needed e.g. 'summary_redesign_late_2015'" if name_contains_new?
-  end
-
-  def name_must_not_end_with_test
-    errors[:name] << "'test' is redundant.  All splits are testable." if name_ends_with_test?
-  end
-
-  def variants_must_be_snake_case
-    errors[:registry] << "all variants must be snake_case: #{variants.inspect}" if variants_not_underscored?
-  end
-
   def registry_weights_must_sum_to_100
     sum = registry && registry.values.sum
     errors.add(:registry, "must contain weights that sum to 100% (got #{sum})") unless sum == 100
@@ -100,30 +80,6 @@ class Split < ActiveRecord::Base
     return unless registry.present?
     return unless @registry_before_type_cast.values.any? { |w| w.to_i.to_s != w.to_s }
     errors.add(:registry, "all weights must be integers")
-  end
-
-  def name_not_underscored?
-    name && !underscored?(name)
-  end
-
-  def name_contains_new?
-    name && dasherized_name.match(/\bnew\b/i).present?
-  end
-
-  def name_ends_with_test?
-    name && dasherized_name.match(/\btest\z/i).present?
-  end
-
-  def variants_not_underscored?
-    variants.any? { |k| !underscored?(k) }
-  end
-
-  def underscored?(string)
-    string.to_s == string.to_s.underscore
-  end
-
-  def dasherized_name
-    name && name.to_s.dasherize
   end
 
   def cast_registry
